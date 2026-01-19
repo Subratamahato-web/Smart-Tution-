@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SM SMART TUITION | v21.0 Cloud & QR Smart</title>
-    
+    <title>SM SMART TUITION | v21.0 Final</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@500;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
         :root { 
@@ -25,36 +22,66 @@
 
         body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background: var(--bg); color: var(--white); margin: 0; transition: 0.4s; overflow-x: hidden; }
         .header { padding: 25px 15px; text-align: center; background: var(--p); border-bottom: 3px solid var(--acc); position: sticky; top:0; z-index:100; }
+        .theme-switcher { display: flex; justify-content: center; gap: 12px; margin-bottom: 12px; }
+        .t-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px; background: var(--card-bg); padding: 18px; border-radius: 18px; border: 1px solid rgba(128,128,128,0.2); }
         .stat-box b { font-family: 'Orbitron'; font-size: 20px; color: var(--acc); }
         .container { max-width: 500px; margin: auto; padding: 0 15px; }
+        .search-box { width: 100%; padding: 14px; background: var(--card-bg); border: 1px solid rgba(128,128,128,0.2); border-radius: 12px; color: var(--white); margin-bottom: 15px; outline: none; box-sizing: border-box; }
         .card { background: var(--card-bg); padding: 12px; border-radius: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; border: 1px solid rgba(128,128,128,0.1); position: relative; }
         .card-img-thumb { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 2px solid var(--acc); }
-        .btn { border: none; border-radius: 8px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 6px; color: white; }
-        .btn-grad { background: var(--grad); }
+        .btn { border: none; border-radius: 8px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-grad { background: var(--grad); color: white; }
+        .wa-float { position: absolute; top: 12px; right: 12px; background: #25d366; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: bold; }
+
+        /* ID & Receipt Structure for Bulk */
+        .id-card-landscape { width: 350px; height: 210px; background: #fff; border-radius: 12px; margin: 10px auto; position: relative; overflow: hidden; display: flex; border: 3px solid var(--theme-color); color: #333; }
+        .id-header { position: absolute; top:0; width:100%; height:40px; background: var(--theme-color); color:#fff; display:flex; align-items:center; justify-content:center; font-family: 'Orbitron'; font-size:12px; text-transform: uppercase; }
+        .id-left { width: 110px; margin-top: 40px; padding: 10px; text-align: center; background: #f8fafc; border-right: 1px solid #eee; }
+        .id-photo { width: 80px; height: 80px; border: 2px solid var(--theme-color); object-fit: cover; border-radius: 6px; }
+        .id-right { flex: 1; margin-top: 40px; padding: 15px; font-size: 11px; line-height: 1.6; text-align: left; }
+        .qr-id-box { position: absolute; bottom: 40px; right: 15px; border: 1.5px solid var(--theme-color); padding: 2px; background: #fff; }
+        .receipt-box { width: 330px; background: #fff; padding: 20px; color: #333; margin: 10px auto; border: 2px solid var(--theme-color); position: relative; border-radius: 8px; }
+        .paid-stamp { font-size: 20px; font-weight: 900; border: 2px dashed var(--theme-color); padding: 10px; margin: 15px 0; text-align: center; background: #f0fdf4; color: #15803d; }
+        
+        .sig-box { position: absolute; bottom: 5px; right: 15px; text-align: center; }
+        .sig-text { font-family: 'Dancing Script', cursive; font-size: 17px; color: #0369a1; display: block; line-height: 1; }
+        .sig-label { font-size: 8px; border-top: 1px solid #333; padding-top: 1px; font-weight: 800; text-transform: uppercase; display: block; }
+
+        /* Modals */
         .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; overflow-y: auto; padding-top: 20px; }
-        
-        /* ID Card Layout */
-        .id-card-landscape { width: 350px; height: 210px; background: #fff; border-radius: 12px; margin: auto; position: relative; overflow: hidden; display: flex; border: 3px solid var(--theme-color); color: #333; }
-        .id-header { position: absolute; top:0; width:100%; height:40px; background: var(--theme-color); color:#fff; display:flex; align-items:center; justify-content:center; font-family: 'Orbitron'; font-size:12px; }
-        .id-photo { width: 80px; height: 80px; border: 2px solid var(--theme-color); border-radius: 6px; }
-        
-        /* Receipt Layout */
-        .receipt-box { width: 330px; background: #fff; padding: 20px; color: #333; margin: auto; border: 2px solid var(--theme-color); border-radius: 8px; }
-        .paid-stamp { font-size: 20px; font-weight: 900; border: 2px dashed #15803d; color: #15803d; padding: 10px; text-align: center; }
-        
-        #public-view { display: none; text-align: center; padding: 20px; background: var(--bg); min-height: 100vh; }
+        .m-content { background: var(--bg); width: 88%; max-width: 380px; margin: auto; padding: 20px; border-radius: 20px; border: 1.5px solid var(--acc); }
+        .edit-in { width: 100%; padding: 12px; margin-top: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: var(--white); box-sizing: border-box; }
+        .month-item { padding:10px; border-radius:10px; text-align:center; cursor:pointer; position: relative; transition: 0.2s; }
+        .paid-badge { position: absolute; top: -5px; right: -5px; background: var(--success); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+
+        #bulk-print-zone { display: none; background: white; padding: 20px; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #bulk-print-zone, #bulk-print-zone * { visibility: visible; }
+            #bulk-print-zone { display: block !important; position: absolute; left:0; top:0; width: 100%; }
+        }
     </style>
 </head>
 <body id="main-body">
 
-<div id="admin-panel">
+<div id="admin-view">
     <div class="header">
+        <div class="theme-switcher">
+            <div class="t-dot" style="background:#0ea5e9" onclick="setTheme('')"></div>
+            <div class="t-dot" style="background:#3b82f6" onclick="setTheme('ocean')"></div>
+            <div class="t-dot" style="background:#10b981" onclick="setTheme('forest')"></div>
+            <div class="t-dot" style="background:#8b5cf6" onclick="setTheme('royal')"></div>
+        </div>
         <h3 style="margin:5px 0; font-family: 'Orbitron'; color: var(--acc);">SM SMART TUITION</h3>
         <div style="display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;">
+            <button onclick="exportData()" class="btn btn-grad">📁 Backup</button>
+            <button onclick="document.getElementById('fIn').click()" class="btn" style="background:#475569; color:white;">📂 Restore</button>
             <button onclick="generateBulk('id')" class="btn" style="background:var(--gold); color:#000;">🖨️ IDs</button>
-            <button onclick="generateBulk('receipt')" class="btn" style="background:var(--success);">🧾 Receipts</button>
-            <button onclick="exportData()" class="btn" style="background:#475569;">📁 Backup</button>
+            <button onclick="generateBulk('receipt')" class="btn" style="background:var(--success); color:white;">🧾 Receipts</button>
+            <button onclick="openNoticeModal()" class="btn" style="background:var(--danger); color:white;">📢 Notice</button>
+            <input type="file" id="fIn" style="display:none" onchange="importData(event)">
         </div>
     </div>
 
@@ -64,161 +91,302 @@
     </div>
 
     <div class="container">
-        <button onclick="openAddModal()" class="btn btn-grad" style="width:100%; padding:14px; margin-bottom:15px;">+ NEW REGISTRATION</button>
-        <input type="text" id="search" class="search-box" style="width:100%; padding:12px; border-radius:10px; margin-bottom:15px;" placeholder="Search Student..." onkeyup="render()">
+        <button onclick="openAddModal()" class="btn btn-grad" style="width:100%; padding:14px; margin-bottom:15px; border-radius:12px;">+ NEW REGISTRATION</button>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <select id="currentYear" class="edit-in" style="margin:0; flex:1;" onchange="render()">
+                <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+            </select>
+            <select id="classFilter" class="edit-in" style="margin:0; flex:1;" onchange="render()"><option value="all">ALL CLASSES</option></select>
+        </div>
+        <input type="text" id="search" class="search-box" placeholder="Search by name or ID..." onkeyup="render()">
         <div id="list"></div>
     </div>
 </div>
 
-<div id="public-view">
-    <h2 style="color: var(--acc); font-family: 'Orbitron';">Digital Student Portal</h2>
-    <div id="id-display" style="margin-bottom: 20px;"></div>
-    <div id="receipt-display"></div>
-    <button onclick="location.reload()" class="btn btn-grad" style="margin-top:20px;">BACK TO ADMIN</button>
+<div id="public-view" class="container" style="display:none; text-align:center; padding-top:50px;">
+    <div id="public-content"></div>
+    <button onclick="window.location.search=''" class="btn btn-grad" style="width:100%; margin-top:20px;">BACK TO DASHBOARD</button>
 </div>
+
+<div id="pay-modal" class="modal"><div class="m-content">
+    <h3 id="p-name" style="color:var(--acc); margin-top:0;"></h3>
+    <div id="m-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
+    <button onclick="closeModal('pay-modal'); render();" class="btn" style="width:100%; margin-top:20px; background:var(--danger); color:white">SAVE & CLOSE</button>
+</div></div>
+
+<div id="receipt-modal" class="modal"><div style="text-align:center; padding:20px;">
+    <div id="receipt-capture" class="receipt-box">
+        <h3 style="color:var(--theme-color); margin:0;">FEES RECEIPT</h3><small>SM SMART TUITION</small><hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; text-align:left; font-size:11px;">
+            <img id="r-img" src="" style="width:55px; height:55px; border:1px solid #ddd; object-fit:cover;">
+            <div>Date: <b id="r-date"></b><br>ID: <b id="r-id"></b><br>Class: <b id="r-cls"></b></div>
+        </div>
+        <p style="font-size:13px; margin:15px 0;">Student <b><span id="r-name"></span></b> has successfully paid fees for <b><span id="r-month"></span></b>.</p>
+        <div class="paid-stamp">PAID: 100/-</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:15px;">
+            <div id="r-q"></div>
+            <div class="sig-box" style="position:static;"><span class="sig-text">Subrata Mahato</span><span class="sig-label">Director</span></div>
+        </div>
+    </div>
+    <button onclick="downloadDoc('receipt-capture', 'Receipt')" class="btn btn-grad" style="margin-top:15px">💾 DOWNLOAD</button>
+    <button onclick="closeModal('receipt-modal')" class="btn" style="background:var(--danger); color:white;">CLOSE</button>
+</div></div>
 
 <div id="id-modal" class="modal"><div style="text-align:center; padding:20px;">
     <div id="id-capture" class="id-card-landscape">
         <div class="id-header">Student Identity Card</div>
-        <div style="width:110px; margin-top:40px; padding:10px; border-right:1px solid #eee;">
-            <img id="id-p-view" src="" class="id-photo"><br><b id="id-v" style="font-size:10px; color:var(--theme-color)"></b>
-        </div>
-        <div style="flex:1; margin-top:40px; padding:15px; font-size:11px; text-align:left;">
+        <div class="id-left"><img id="id-p-view" src="" class="id-photo"><b id="id-v" style="font-size:10px; display:block; margin-top:6px; color:var(--theme-color)"></b></div>
+        <div class="id-right">
             <b>NAME:</b> <span id="id-n"></span><br><b>FATHER:</b> <span id="id-f"></span><br>
-            <b>CLASS:</b> <span id="id-c"></span><br><b>BATCH:</b> <span id="id-b"></span>
-            <div id="id-q" style="margin-top:10px;"></div>
+            <b>CLASS:</b> <span id="id-c"></span><br><b>BATCH:</b> <span id="id-b"></span><br><b>PHONE:</b> <span id="id-ph"></span>
+            <div id="id-q" class="qr-id-box"></div>
+        </div>
+        <div style="position:absolute; bottom:0; width:100%; height:32px; background:#f1f5f9; display:flex; justify-content:space-around; align-items:center; font-size:8px; border-top:1px solid #ddd;">
+            <b style="color:var(--theme-color)">SM SMART TUITION</b>
+            <div class="sig-box"><span class="sig-text">Subrata Mahato</span><span class="sig-label">Director</span></div>
         </div>
     </div>
     <button onclick="downloadDoc('id-capture', 'ID')" class="btn btn-grad" style="margin-top:15px">💾 DOWNLOAD ID</button>
-    <button onclick="closeModal('id-modal')" class="btn" style="background:var(--danger);">CLOSE</button>
+    <button onclick="closeModal('id-modal')" class="btn" style="background:var(--danger); color:white;">CLOSE</button>
 </div></div>
 
-<div id="add-modal" class="modal"><div style="background:var(--p); width:85%; margin:auto; padding:20px; border-radius:20px; border:1px solid var(--acc);">
-    <h3 id="modal-title" style="color:var(--acc)">REGISTRATION</h3>
-    <input type="file" id="a-photo" style="width:100%; margin-bottom:10px;" accept="image/*">
-    <input type="text" id="a-name" placeholder="Name" style="width:100%; padding:10px; margin-bottom:10px;">
-    <input type="text" id="a-cls" placeholder="Class" style="width:100%; padding:10px; margin-bottom:10px;">
-    <input type="text" id="a-phone" placeholder="Phone" style="width:100%; padding:10px; margin-bottom:10px;">
-    <button onclick="saveStudent()" class="btn btn-grad" style="width:100%;">SAVE DATA</button>
-    <button onclick="closeModal('add-modal')" class="btn" style="width:100%; margin-top:10px; background:#555;">CANCEL</button>
+<div id="add-modal" class="modal"><div class="m-content">
+    <h3 id="modal-title" style="color:var(--acc)">STUDENT INFO</h3>
+    <input type="file" id="a-photo" class="edit-in" accept="image/*">
+    <input type="text" id="a-id" class="edit-in" placeholder="ID" readonly>
+    <input type="text" id="a-name" class="edit-in" placeholder="Name"><input type="text" id="a-father" class="edit-in" placeholder="Father">
+    <input type="text" id="a-cls" class="edit-in" placeholder="Class"><input type="text" id="a-batch" class="edit-in" placeholder="Batch">
+    <input type="text" id="a-phone" class="edit-in" placeholder="Phone">
+    <button onclick="saveStudent()" class="btn btn-grad" style="width:100%; margin-top:15px;">SAVE TO CLOUD</button>
+    <button id="del-btn" onclick="deleteStudent()" class="btn" style="display:none; width:100%; margin-top:8px; background:var(--danger); color:white">DELETE</button>
+    <button onclick="closeModal('add-modal')" class="btn" style="width:100%; margin-top:8px; background:#555; color:#fff">CANCEL</button>
 </div></div>
+
+<div id="notice-modal" class="modal"><div class="m-content">
+    <h3 style="color:var(--acc)">Set Notice</h3>
+    <textarea id="notice-text" class="edit-in" rows="4" placeholder="Enter notice for students..."></textarea>
+    <button onclick="saveNotice()" class="btn btn-grad" style="width:100%; margin-top:15px;">SAVE NOTICE</button>
+    <button onclick="closeModal('notice-modal')" class="btn" style="width:100%; margin-top:8px; background:#555; color:#fff">CANCEL</button>
+</div></div>
+
+<div id="bulk-print-zone"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, get, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAq1HPtvPEXT25LTh8m12_9sjCcucFSLvw",
+      authDomain: "smart-tution-f92ea.firebaseapp.com",
+      databaseURL: "https://smart-tution-f92ea-default-rtdb.firebaseio.com",
+      projectId: "smart-tution-f92ea",
+      storageBucket: "smart-tution-f92ea.appspot.com",
+      messagingSenderId: "916106918765",
+      appId: "1:916106918765:web:47c575e0f8446934b7b864"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db_fb = getDatabase(app);
+
+    window.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    window.db = [];
+    window.curIdx = null;
+    window.isEditMode = false;
+
+    // Load Data
+    onValue(ref(db_fb, 'students'), (snapshot) => {
+        const data = snapshot.val();
+        window.db = data ? Object.values(data) : [];
+        render();
+        updateFilters();
+    });
+
+    // QR Profile View
+    const sid = new URLSearchParams(window.location.search).get('sid');
+    if(sid) {
+        document.getElementById('admin-view').style.display = 'none';
+        document.getElementById('public-view').style.display = 'block';
+        showPublicProfile(sid);
+    }
+
+    async function showPublicProfile(id) {
+        const snapshot = await get(ref(db_fb, 'students/' + id));
+        const s = snapshot.val();
+        const nSnap = await get(ref(db_fb, 'notice'));
+        const notice = nSnap.val() || "No new notice.";
+        const container = document.getElementById('public-content');
+        
+        if(!s) { container.innerHTML = "<h3>Student Not Found!</h3>"; return; }
+        
+        const curM = window.months[new Date().getMonth()];
+        const curY = new Date().getFullYear();
+        const isPaid = s.payments && s.payments[curY+'_'+curM];
+
+        container.innerHTML = `
+            <div class="card" style="flex-direction:column; padding:25px; text-align:center; background:#fff; color:#333;">
+                <img src="${s.photo}" style="width:120px; height:120px; border-radius:50%; border:3px solid var(--acc); object-fit:cover;">
+                <h2 style="margin:10px 0;">${s.name}</h2>
+                <p>ID: ${s.id} | Class: ${s.cls}</p>
+                <div style="background:${isPaid?'#10b981':'#f43f5e'}; color:white; padding:15px; border-radius:12px; margin:15px 0; font-weight:bold;">
+                    ${isPaid ? '✅ চলতি মাসের বেতন পরিশোধিত (PAID)' : '❌ চলতি মাসের বেতন বাকি (UNPAID)'}
+                </div>
+                <div style="text-align:left; background:#f1f5f9; padding:15px; border-radius:12px; border-left:5px solid #0ea5e9;">
+                    <b style="color:#0ea5e9">📢 নোটিশ:</b><br>${notice}
+                </div>
+            </div>
+        `;
+    }
+
+    // Backup & Restore
+    window.exportData = function() {
+        if (window.db.length === 0) return alert("কোনো ডাটা নেই!");
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.db));
+        const a = document.createElement('a'); a.href = dataStr; a.download = "SM_Backup.json"; a.click();
+    }
+
+    window.importData = function(event) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const data = JSON.parse(e.target.result);
+            if(confirm("সব ডাটা ক্লাউডে ওভাররাইট হবে। নিশ্চিত?")) {
+                for(let s of data) await set(ref(db_fb, 'students/' + s.id), s);
+                alert("রিস্টোর সফল হয়েছে!");
+            }
+        };
+        reader.readAsText(event.target.files[0]);
+    }
+
+    // Save/Update Student
+    window.saveStudent = async function() {
+        const n = document.getElementById('a-name').value, c = document.getElementById('a-cls').value, id = document.getElementById('a-id').value;
+        if(!n || !c) return alert("নাম এবং ক্লাস দিন!");
+        
+        let photo = window.isEditMode ? window.db[window.curIdx].photo : "https://via.placeholder.com/150";
+        const file = document.getElementById('a-photo').files[0];
+        if(file) photo = await compress(file);
+
+        const obj = { 
+            id, name: n, father: document.getElementById('a-father').value, 
+            cls: c, batch: document.getElementById('a-batch').value, 
+            phone: document.getElementById('a-phone').value, 
+            photo: photo, 
+            payments: window.isEditMode ? (window.db[window.curIdx].payments || {}) : {} 
+        };
+
+        set(ref(db_fb, 'students/' + id), obj).then(() => closeModal('add-modal'));
+    }
+
+    window.togglePay = function(m) {
+        const y = document.getElementById('currentYear').value, k = y+'_'+m, s = window.db[window.curIdx];
+        if(!s.payments) s.payments = {};
+        if(s.payments[k]) delete s.payments[k];
+        else s.payments[k] = { date: new Date().toLocaleDateString() };
+        update(ref(db_fb, 'students/' + s.id), { payments: s.payments }).then(() => updatePayGrid());
+    }
+
+    window.deleteStudent = function() {
+        if(confirm("মুছে ফেলতে চান?")) remove(ref(db_fb, 'students/' + window.db[window.curIdx].id)).then(() => closeModal('add-modal'));
+    }
+
+    window.saveNotice = function() {
+        const text = document.getElementById('notice-text').value;
+        set(ref(db_fb, 'notice'), text).then(() => { alert("নোটিশ সেভ হয়েছে!"); closeModal('notice-modal'); });
+    }
+</script>
 
 <script>
-    // --- FIREBASE CONFIG (FROM YOUR SCREENSHOT) ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyAq1HPtvPEXTZ5LTh8m12_9sjCcucFSLvw",
-        authDomain: "smart-tution-f92ea.firebaseapp.com",
-        databaseURL: "https://smart-tution-f92ea-default-rtdb.firebaseio.com/",
-        projectId: "smart-tution-f92ea",
-        storageBucket: "smart-tution-f92ea.firebaseapp.com",
-        messagingSenderId: "916106918765",
-        appId: "1:916106918765:web:47c575e0f8446934b7b864"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const dbRef = firebase.database().ref("students");
+    // UI Logic
+    function setTheme(t) { document.getElementById('main-body').setAttribute('theme', t); localStorage.setItem('sm-theme', t); }
+    setTheme(localStorage.getItem('sm-theme') || '');
 
-    let db = [];
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    // Check for QR Link
-    window.onload = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentId = urlParams.get('id');
-        if (studentId) {
-            loadPublicView(studentId);
-        } else {
-            loadAdminData();
-        }
-    };
-
-    function loadAdminData() {
-        dbRef.on('value', snapshot => {
-            db = [];
-            snapshot.forEach(child => { db.push({f_id: child.key, ...child.val()}); });
-            render();
-        });
-    }
+    function getQRLink(id) { return window.location.origin + window.location.pathname + "?sid=" + id; }
 
     function render() {
-        const list = document.getElementById('list');
-        list.innerHTML = "";
+        const list = document.getElementById('list'), q = document.getElementById('search').value.toLowerCase();
+        const y = document.getElementById('currentYear').value, cf = document.getElementById('classFilter').value;
+        const curM = months[new Date().getMonth()]; let pCount = 0; list.innerHTML = ""; 
+
         db.forEach((s, i) => {
-            list.innerHTML += `<div class="card">
-                <img class="card-img-thumb" src="${s.photo || 'https://via.placeholder.com/60'}">
-                <div style="flex:1"><b>${s.name}</b><br><small>${s.id} | ${s.cls}</small></div>
-                <button onclick="openID(${i})" class="btn" style="background:var(--acc)">ID</button>
-                <button onclick="openEdit(${i})" class="btn" style="background:#555">Edit</button>
-            </div>`;
-        });
-        document.getElementById('count-s').innerText = db.length;
-    }
-
-    async function saveStudent() {
-        const name = document.getElementById('a-name').value;
-        const cls = document.getElementById('a-cls').value;
-        const id = "SM-" + Date.now().toString().slice(-4);
-        const photoFile = document.getElementById('a-photo').files[0];
-        let photoBase64 = "";
-
-        if(photoFile) {
-            photoBase64 = await compressImage(photoFile);
-        }
-
-        const newStudent = { id, name, cls, photo: photoBase64, phone: document.getElementById('a-phone').value, payments: {} };
-        dbRef.push(newStudent).then(() => {
-            closeModal('add-modal');
-        });
-    }
-
-    function openID(i) {
-        const s = db[i];
-        document.getElementById('id-n').innerText = s.name;
-        document.getElementById('id-v').innerText = s.id;
-        document.getElementById('id-c').innerText = s.cls;
-        document.getElementById('id-p-view').src = s.photo || 'https://via.placeholder.com/80';
-        
-        // QR Code will point to your GitHub link
-        const currentUrl = window.location.href.split('?')[0];
-        document.getElementById('id-q').innerHTML = "";
-        new QRCode(document.getElementById('id-q'), {
-            text: `${currentUrl}?id=${s.id}`,
-            width: 60, height: 60
-        });
-        document.getElementById('id-modal').style.display = 'block';
-    }
-
-    function loadPublicView(id) {
-        document.getElementById('admin-panel').style.display = 'none';
-        document.getElementById('public-view').style.display = 'block';
-        
-        dbRef.orderByChild('id').equalTo(id).once('value', snapshot => {
-            if(snapshot.exists()) {
-                const data = Object.values(snapshot.val())[0];
-                document.getElementById('id-display').innerHTML = `<div class="id-card-landscape">... (ID UI)</div>`; // Similar UI
-                document.getElementById('receipt-display').innerHTML = `<div class="receipt-box"><h3>LAST RECEIPT</h3><div class="paid-stamp">PAID 100/-</div></div>`;
+            const isP = s.payments && s.payments[y+'_'+curM]; if(isP) pCount++;
+            if ((s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q)) && (cf === 'all' || s.cls === cf)) {
+                list.innerHTML += `<div class="card" style="border-left:5px solid ${isP?'var(--success)':'var(--danger)'}">
+                    <a href="https://wa.me/91${s.phone}" target="_blank" class="wa-float">W</a>
+                    <img class="card-img-thumb" src="${s.photo}">
+                    <div style="flex:1"><b>${s.name}</b><br><small>${s.id} | ${s.cls}</small>
+                    <div style="margin-top:6px; display:flex; gap:5px;">
+                        <button onclick="openPay(${i})" class="btn" style="background:var(--success); color:white">PAYMENT</button>
+                        <button onclick="openID(${i})" class="btn" style="background:var(--acc); color:white">ID CARD</button>
+                        <button onclick="openEdit(${i})" class="btn" style="background:#555; color:white">Edit</button>
+                    </div></div></div>`;
             }
         });
+        document.getElementById('count-s').innerText = db.length;
+        document.getElementById('count-m').innerText = (pCount * 100) + "/-";
     }
 
-    // Helper functions
-    function compressImage(file) {
-        return new Promise(res => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = e => {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 200; canvas.height = 200;
-                    canvas.getContext('2d').drawImage(img, 0, 0, 200, 200);
-                    res(canvas.toDataURL('image/jpeg', 0.7));
-                };
-            };
+    function openPay(i) { curIdx = i; document.getElementById('p-name').innerText = db[i].name; updatePayGrid(); document.getElementById('pay-modal').style.display = 'block'; }
+    
+    function updatePayGrid() {
+        const s = db[curIdx], y = document.getElementById('currentYear').value, g = document.getElementById('m-grid'); g.innerHTML = ""; 
+        months.forEach(m => { 
+            const k = y+'_'+m, isP = s.payments && s.payments[k]; 
+            g.innerHTML += `<div class="month-item" style="background:${isP?'var(--grad)':'rgba(128,128,128,0.1)'}" onclick="togglePay('${m}')">
+                <b>${m}</b><br>${isP ? `<small style="text-decoration:underline;" onclick="openReceipt(event,'${m}','${y}')">Receipt</small>` : '<small>Due</small>'}
+                ${isP?'<div class="paid-badge">✓</div>':''}
+            </div>`; 
         });
     }
-    function openAddModal() { document.getElementById('add-modal').style.display = 'block'; }
+
+    function openReceipt(e, m, y) {
+        e.stopPropagation(); const s = db[curIdx];
+        document.getElementById('r-name').innerText = s.name; document.getElementById('r-id').innerText = s.id;
+        document.getElementById('r-cls').innerText = s.cls; document.getElementById('r-month').innerText = m + " " + y;
+        document.getElementById('r-date').innerText = s.payments[y+'_'+m].date;
+        document.getElementById('r-img').src = s.photo;
+        document.getElementById('r-q').innerHTML = ""; 
+        new QRCode(document.getElementById('r-q'), { text: getQRLink(s.id), width: 50, height: 50 });
+        document.getElementById('receipt-modal').style.display = 'block';
+    }
+
+    function openID(i) { 
+        curIdx = i; const s = db[i]; 
+        document.getElementById('id-n').innerText = s.name; document.getElementById('id-f').innerText = s.father||"N/A"; 
+        document.getElementById('id-v').innerText = s.id; document.getElementById('id-c').innerText = s.cls; 
+        document.getElementById('id-b').innerText = s.batch||"N/A"; document.getElementById('id-ph').innerText = s.phone; 
+        document.getElementById('id-p-view').src = s.photo; 
+        document.getElementById('id-q').innerHTML = ""; 
+        new QRCode(document.getElementById('id-q'), { text: getQRLink(s.id), width: 50, height: 50 }); 
+        document.getElementById('id-modal').style.display = 'block'; 
+    }
+
+    // Bulk Print Function
+    function generateBulk(type) {
+        const zone = document.getElementById('bulk-print-zone');
+        zone.innerHTML = "";
+        db.forEach(s => {
+            const wrap = document.createElement('div');
+            wrap.style.padding = "20px";
+            if(type === 'id') {
+                wrap.innerHTML = `<div class="id-card-landscape">
+                    <div class="id-header">Identity Card</div>
+                    <div class="id-left"><img src="${s.photo}" class="id-photo"></div>
+                    <div class="id-right"><b>NAME:</b> ${s.name}<br><b>ID:</b> ${s.id}<br><b>CLASS:</b> ${s.cls}</div>
+                </div>`;
+            } else {
+                wrap.innerHTML = `<div class="receipt-box"><h3>FEES RECEIPT</h3><hr>Student: ${s.name}<br>ID: ${s.id}<br>Class: ${s.cls}<div class="paid-stamp">PAID</div></div>`;
+            }
+            zone.appendChild(wrap);
+        });
+        window.print();
+    }
+
+    function openAddModal() { isEditMode = false; document.getElementById('modal-title').innerText = "REGISTRATION"; document.getElementById('a-id').value = "SM-" + Date.now().toString().slice(-6); ['a-name','a-father','a-cls','a-batch','a-phone'].forEach(id => document.getElementById(id).value = ""); document.getElementById('del-btn').style.display = "none"; document.getElementById('add-modal').style.display = 'block'; }
+    function openEdit(i) { curIdx = i; isEditMode = true; const s = db[i]; document.getElementById('modal-title').innerText = "EDIT INFO"; document.getElementById('a-id').value = s.id; document.getElementById('a-name').value = s.name; document.getElementById('a-father').value = s.father; document.getElementById('a-cls').value = s.cls; document.getElementById('a-batch').value = s.batch; document.getElementById('a-phone').value = s.phone; document.getElementById('del-btn').style.display = "block"; document.getElementById('add-modal').style.display = 'block'; }
+    function openNoticeModal() { document.getElementById('notice-modal').style.display = 'block'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    async function compress(f) { return new Promise(res => { const r = new FileReader(); r.readAsDataURL(f); r.onload = e => { const img = new Image(); img.src = e.target.result; img.onload = () => { const c = document.createElement('canvas'); c.width = 250; c.height = 250; c.getContext('2d').drawImage(img,0,0,250,250); res(c.toDataURL('image/jpeg', 0.8)); }; }; }); }
+    function downloadDoc(el, n) { html2canvas(document.getElementById(el), {scale: 2}).then(c => { const a = document.createElement('a'); a.href = c.toDataURL(); a.download = n+".png"; a.click(); }); }
+    function updateFilters() { const f = document.getElementById('classFilter'), cls = [...new Set(db.map(s => s.cls))].filter(c => c); f.innerHTML = '<option value="all">ALL CLASSES</option>'; cls.forEach(c => f.innerHTML += `<option value="${c}">${c}</option>`); }
 </script>
 </body>
 </html>
