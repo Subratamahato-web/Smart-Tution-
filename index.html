@@ -3,180 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SM SMART TUITION | v22.0 Final Restore</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@500;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>SM SMART TUITION | Pro Ultimate v27.0</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@500;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
+        /* ৩, ১১. ফুল থিম ইঞ্জিন */
         :root { 
             --p: #0f172a; --acc: #0ea5e9; --grad: linear-gradient(135deg, #0ea5e9, #6366f1);
             --bg: #020617; --card-bg: rgba(255, 255, 255, 0.06); --white: #f8fafc; 
             --success: #10b981; --danger: #f43f5e; --gold: #fbbf24; --theme-color: #0ea5e9;
         }
+        [theme="ocean"] { --p: #1e3a8a; --acc: #3b82f6; --bg: #f0f9ff; --card-bg: #ffffff; --white: #1e293b; --grad: linear-gradient(135deg, #3b82f6, #2dd4bf); --theme-color: #3b82f6; }
+        [theme="forest"] { --p: #064e3b; --acc: #10b981; --bg: #ecfdf5; --card-bg: #ffffff; --white: #064e3b; --grad: linear-gradient(135deg, #10b981, #34d399); --theme-color: #10b981; }
         [theme="royal"] { --p: #1e1b4b; --acc: #fbbf24; --bg: #020617; --card-bg: rgba(251, 191, 36, 0.05); --white: #fef3c7; --grad: linear-gradient(135deg, #fbbf24, #d97706); --theme-color: #fbbf24; }
+        [theme="dark"] { --p: #000; --acc: #fff; --bg: #111; --card-bg: #222; --white: #eee; --grad: linear-gradient(135deg, #444, #000); --theme-color: #fff; }
 
-        body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background: var(--bg); color: var(--white); margin: 0; overflow-x: hidden; }
-        
-        .header { padding: 20px 15px; text-align: center; background: var(--p); border-bottom: 3px solid var(--acc); position: sticky; top:0; z-index:100; backdrop-filter: blur(10px); }
+        body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background: var(--bg); color: var(--white); margin: 0; transition: 0.4s; overflow-x: hidden; }
+        .header { padding: 15px; text-align: center; background: var(--p); border-bottom: 3px solid var(--acc); position: sticky; top:0; z-index:100; }
         .theme-switcher { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .t-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
+        .t-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-        .notice-bar { background: var(--danger); color: white; padding: 8px; font-size: 12px; text-align: center; font-weight: bold; }
-
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px; background: var(--card-bg); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px; background: var(--card-bg); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         .stat-box b { font-family: 'Orbitron'; font-size: 20px; color: var(--acc); }
 
         .container { max-width: 500px; margin: auto; padding: 0 15px; }
-        .search-box { width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--white); margin-bottom: 15px; outline: none; box-sizing: border-box; }
+        .search-box { width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid rgba(128,128,128,0.2); border-radius: 10px; color: var(--white); margin-bottom: 15px; outline: none; box-sizing: border-box; }
 
-        .card { background: var(--card-bg); padding: 12px; border-radius: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .card { background: var(--card-bg); padding: 12px; border-radius: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; border: 1px solid rgba(128,128,128,0.1); position: relative; }
         .card-img-thumb { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--acc); }
         
-        .btn { border: none; border-radius: 8px; padding: 8px 12px; font-weight: 700; cursor: pointer; font-size: 10px; display: inline-flex; align-items: center; gap: 5px; }
+        .btn { border: none; border-radius: 6px; padding: 8px 12px; font-weight: 700; cursor: pointer; font-size: 10px; display: inline-flex; align-items: center; gap: 5px; }
         .btn-grad { background: var(--grad); color: white; }
 
-        .wa-float { position: absolute; top: 10px; right: 10px; background: #25d366; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px; }
-
-        /* ID Card Landscape - v20.0 */
-        .id-card-landscape { width: 350px; height: 210px; background: #fff; border-radius: 10px; margin: 10px auto; position: relative; overflow: hidden; display: flex; border: 2px solid var(--theme-color); color: #333; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        /* ১৮, ২. নিখুঁত ID Card Design (Fixed QR Spacing) */
+        .id-card-landscape { width: 350px; height: 215px; background: #fff; border-radius: 12px; margin: auto; position: relative; overflow: hidden; display: flex; border: 2px solid var(--theme-color); color: #333; text-align: left; }
         .id-header { position: absolute; top:0; width:100%; height:40px; background: var(--theme-color); color:#fff; display:flex; align-items:center; justify-content:center; font-family: 'Orbitron'; font-size:10px; font-weight: bold; }
         .id-left { width: 110px; margin-top: 40px; padding: 10px; text-align: center; border-right: 1px solid #eee; }
-        .id-photo { width: 80px; height: 90px; border: 1.5px solid var(--theme-color); object-fit: cover; border-radius: 4px; }
-        .id-right { flex: 1; margin-top: 45px; padding: 10px; font-size: 10px; line-height: 1.6; }
-        .qr-id-box { position: absolute; bottom: 45px; right: 10px; }
+        .id-photo { width: 80px; height: 95px; border: 1.5px solid var(--theme-color); object-fit: cover; border-radius: 5px; }
+        .id-right { flex: 1; margin-top: 45px; padding: 12px; font-size: 10px; line-height: 1.7; position: relative; }
+        .qr-id-box { position: absolute; bottom: 45px; right: 10px; border: 1px solid #eee; padding: 2px; background: #fff; z-index: 5; }
         .sig-box { position: absolute; bottom: 5px; right: 15px; text-align: center; }
         .sig-text { font-family: 'Dancing Script', cursive; font-size: 16px; color: #0369a1; display: block; line-height: 1; }
+        .sig-label { font-size: 7px; border-top: 1px solid #333; font-weight: bold; display: block; padding-top: 1px; }
 
-        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; overflow-y: auto; padding-top: 10px; }
-        .m-content { background: var(--bg); width: 90%; max-width: 380px; margin: auto; padding: 20px; border-radius: 20px; border: 1.5px solid var(--acc); }
-        .edit-in { width: 100%; padding: 10px; margin-top: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--white); box-sizing: border-box; }
+        /* ১, ১৭. অ্যাডভান্সড রিসিট ডিজাইন */
+        .receipt-box { width: 300px; background: #fff; padding: 20px; color: #333; margin: auto; border: 2.5px solid var(--theme-color); border-radius: 10px; position: relative; text-align: left; }
+        .paid-stamp { font-size: 18px; font-weight: 900; border: 3px dashed #15803d; padding: 8px; margin: 15px 0; text-align: center; background: #f0fdf4; color: #15803d; transform: rotate(-5deg); display: block; }
+
+        /* Modals */
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; overflow-y: auto; padding-top: 15px; }
+        .m-content { background: var(--p); width: 90%; max-width: 380px; margin: auto; padding: 20px; border-radius: 20px; border: 1.5px solid var(--acc); color: white; }
+        .edit-in { width: 100%; padding: 10px; margin-top: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; box-sizing: border-box; }
         
-        .month-item { padding:10px; border-radius:10px; text-align:center; cursor:pointer; background: rgba(255,255,255,0.05); border: 1px solid #333; position: relative; }
-        .paid-badge { position: absolute; top: -5px; right: -5px; background: var(--success); color: white; width: 16px; height: 16px; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+        /* ১৬. পেমেন্ট স্টাইল */
+        .month-item { padding:10px; border-radius:10px; text-align:center; cursor:pointer; background: rgba(255,255,255,0.05); border: 1px solid #444; position: relative; }
+        .paid-badge { position: absolute; top: -5px; right: -5px; background: var(--success); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #fff; }
 
-        @media print { body * { visibility: hidden; } #bulk-print-zone, #bulk-print-zone * { visibility: visible; } #bulk-print-zone { position: absolute; left: 0; top: 0; width: 100%; } .id-card-landscape { page-break-inside: avoid; margin: 20px; } }
+        /* ৯, ১২. বাল্ক প্রিন্ট */
+        #bulk-print-zone { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #bulk-print-zone, #bulk-print-zone * { visibility: visible; }
+            #bulk-print-zone { display: block !important; position: absolute; left:0; top:0; width: 100%; }
+            .print-item { page-break-after: always; padding: 20px; display: flex; justify-content: center; }
+        }
     </style>
 </head>
 <body id="main-body">
 
-<div id="admin-view">
-    <div id="notice-display" class="notice-bar">Loading Notice...</div>
-    <div class="header">
-        <div class="theme-switcher">
-            <div class="t-dot" style="background:#0ea5e9" onclick="setTheme('')"></div>
-            <div class="t-dot" style="background:#fbbf24" onclick="setTheme('royal')"></div>
-        </div>
-        <h3 style="margin:5px 0; font-family: 'Orbitron'; color: var(--acc);">SM SMART TUITION</h3>
-        <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 8px;">
-            <button onclick="openAddModal()" class="btn btn-grad">+ REGISTRATION</button>
-            <button onclick="openNoticeModal()" class="btn" style="background:#475569; color:white;">📢 NOTICE</button>
-            <button onclick="window.print()" class="btn" style="background:var(--success); color:white;">🖨️ BULK PRINT</button>
-            <button onclick="openAbout()" class="btn" style="background:var(--gold); color:#000;">ℹ️ ABOUT</button>
-        </div>
-    </div>
+<div id="notice-display" style="background:var(--danger); color:white; padding:5px; text-align:center; font-size:12px;">লোড হচ্ছে...</div>
 
-    <div class="dashboard">
-        <div class="stat-box"> <small>STUDENTS</small><br><b id="count-s">0</b> </div>
-        <div class="stat-box"> <small>COLLECTION</small><br><b id="count-m">0</b> </div>
+<div class="header">
+    <div class="theme-switcher">
+        <div class="t-dot" style="background:#0ea5e9" onclick="setTheme('')"></div>
+        <div class="t-dot" style="background:#3b82f6" onclick="setTheme('ocean')"></div>
+        <div class="t-dot" style="background:#10b981" onclick="setTheme('forest')"></div>
+        <div class="t-dot" style="background:#fbbf24" onclick="setTheme('royal')"></div>
+        <div class="t-dot" style="background:#333" onclick="setTheme('dark')"></div>
     </div>
-
-    <div class="container">
-        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-            <select id="currentYear" class="edit-in" style="margin:0; flex:1;" onchange="render()">
-                <option value="2025">2025</option>
-                <option value="2026" selected>2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-                <option value="2029">2029</option>
-                <option value="2030">2030</option>
-            </select>
-            <select id="classFilter" class="edit-in" style="margin:0; flex:1;" onchange="render()">
-                <option value="all">ALL CLASSES</option>
-            </select>
-        </div>
-        <input type="text" id="search" class="search-box" placeholder="Search by name or ID..." onkeyup="render()">
-        <div id="list"></div>
+    <h3 style="margin:5px 0; font-family: 'Orbitron'; color: var(--acc);">SM SMART TUITION</h3>
+    <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 10px;">
+        <button onclick="openAddModal()" class="btn btn-grad">+ নতুন ছাত্র</button>
+        <button onclick="exportData()" class="btn" style="background:#475569; color:white;">📁 ব্যাকআপ</button>
+        <button onclick="document.getElementById('fIn').click()" class="btn" style="background:#475569; color:white;">📂 রিস্টোর</button>
+        <button onclick="generateBulk('id')" class="btn" style="background:var(--gold); color:#000;">🖨️ আইডি</button>
+        <button onclick="generateBulk('receipt')" class="btn" style="background:var(--success); color:white;">🧾 রসিদ</button>
+        <input type="file" id="fIn" style="display:none" onchange="importData(event)">
     </div>
 </div>
 
-<div id="bulk-print-zone" style="display:none;"></div>
+<div class="dashboard">
+    <div><small>ছাত্রছাত্রী</small><br><b id="count-s">0</b></div>
+    <div><small>চলতি মাস সংগ্রহ</small><br><b id="count-m">0</b></div>
+</div>
+
+<div class="container">
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+        <select id="currentYear" class="edit-in" style="margin:0; flex:1;" onchange="render()">
+            <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+        </select>
+        <select id="classFilter" class="edit-in" style="margin:0; flex:1;" onchange="render()"><option value="all">সব ক্লাস</option></select>
+    </div>
+    <input type="text" id="search" class="search-box" placeholder="নাম বা আইডি দিয়ে খুঁজুন..." onkeyup="render()">
+    <div id="list"></div>
+</div>
 
 <div id="pay-modal" class="modal"><div class="m-content">
-    <h3 id="p-name" style="color:var(--acc); margin:0 0 15px 0;">Payment History</h3>
-    <div id="m-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
-    <button onclick="closeModal('pay-modal')" class="btn" style="width:100%; margin-top:20px; background:var(--danger); color:white">CLOSE</button>
+    <h3 id="p-name" style="color:var(--acc); margin:0 0 15px 0; font-size:16px;">বেতন পরিশোধ তালিকা</h3>
+    <div id="m-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;"></div>
+    <button onclick="closeModal('pay-modal')" class="btn" style="width:100%; margin-top:20px; background:var(--danger); color:white; padding:10px;">বন্ধ করুন</button>
 </div></div>
 
-<div id="notice-modal" class="modal"><div class="m-content">
-    <h3 style="color:var(--acc)">Update Notice</h3>
-    <textarea id="notice-input" class="edit-in" rows="4" placeholder="Enter notice..."></textarea>
-    <button onclick="saveNotice()" class="btn btn-grad" style="width:100%; margin-top:15px;">SAVE NOTICE</button>
-    <button onclick="closeModal('notice-modal')" class="btn" style="width:100%; margin-top:8px; background:#555; color:#fff">CANCEL</button>
-</div></div>
-
-<div id="about-modal" class="modal"><div class="m-content" style="text-align: center;">
-    <h3 style="color:var(--gold);">SM SMART TUITION</h3>
-    <p>Premium Cloud Management System<br>Version: 22.0 Final<br>Developed by: <b>Subrata Mahato</b></p>
-    <button onclick="closeModal('about-modal')" class="btn btn-grad" style="width:100%;">CLOSE</button>
-</div></div>
-
-<div id="receipt-modal" class="modal"><div style="text-align:center; padding:20px;">
-    <div id="receipt-capture" style="width: 300px; background: #fff; padding: 20px; color: #333; margin: auto; border: 2.5px solid var(--theme-color); border-radius: 10px; text-align: left;">
-        <h3 style="color:var(--theme-color); margin:0; text-align: center;">FEES RECEIPT</h3><hr>
-        <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; margin-top:10px;">
-            <img id="r-img" src="" style="width:50px; height:55px; border:1px solid #ddd; object-fit:cover;">
-            <div>Date: <b id="r-date"></b><br>ID: <b id="r-id"></b><br>Class: <b id="r-cls"></b></div>
-        </div>
-        <p style="font-size:12px; margin:15px 0;">Student <b><span id="r-name"></span></b> has successfully paid fees for <b><span id="r-month"></span></b>.</p>
-        <div style="font-size:18px; font-weight:900; border:2px dashed #15803d; padding:10px; text-align: center; color:#15803d; background:#f0fdf4;">PAID: 100/-</div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:15px;">
-            <div id="r-q"></div>
-            <div style="text-align: center;"><span class="sig-text" style="font-size:14px;">Subrata Mahato</span><small style="border-top:1px solid #333; font-weight:bold; font-size:7px;">DIRECTOR</small></div>
-        </div>
-    </div>
-    <button onclick="downloadDoc('receipt-capture', 'Receipt')" class="btn btn-grad" style="margin-top:15px">💾 DOWNLOAD</button>
-    <button onclick="closeModal('receipt-modal')" class="btn" style="background:var(--danger); color:white;">CLOSE</button>
-</div></div>
-
-<div id="add-modal" class="modal"><div class="m-content">
-    <h3 id="modal-title">REGISTRATION</h3>
-    <input type="file" id="a-photo" class="edit-in" accept="image/*">
-    <input type="text" id="a-id" class="edit-in" placeholder="ID (Auto)" readonly>
-    <input type="text" id="a-name" class="edit-in" placeholder="Full Name">
-    <input type="text" id="a-father" class="edit-in" placeholder="Father's Name">
-    <input type="text" id="a-cls" class="edit-in" placeholder="Class">
-    <input type="text" id="a-batch" class="edit-in" placeholder="Batch Time">
-    <input type="text" id="a-phone" class="edit-in" placeholder="WhatsApp Number">
-    <button onclick="saveStudent()" class="btn btn-grad" style="width:100%; margin-top:15px;">SAVE TO CLOUD</button>
-    <button id="del-btn" onclick="deleteStudent()" class="btn" style="display:none; width:100%; margin-top:8px; background:var(--danger); color:white">DELETE</button>
-    <button onclick="closeModal('add-modal')" class="btn" style="width:100%; margin-top:8px; background:#555; color:#fff">CANCEL</button>
-</div></div>
-
-<div id="id-modal" class="modal"><div style="text-align:center; padding:20px;">
+<div id="id-modal" class="modal"><div style="text-align:center; padding:15px;">
     <div id="id-capture" class="id-card-landscape">
         <div class="id-header">STUDENT IDENTITY CARD</div>
         <div class="id-left">
             <img id="id-p-view" src="" class="id-photo">
-            <div id="id-v" style="font-size:9px; font-weight:bold; margin-top:5px; color:var(--theme-color)"></div>
+            <b id="id-v" style="font-size:10px; display:block; margin-top:5px; color:var(--theme-color)"></b>
         </div>
         <div class="id-right">
-            <b>NAME:</b> <span id="id-n"></span><br>
-            <b>FATHER:</b> <span id="id-f"></span><br>
-            <b>CLASS:</b> <span id="id-c"></span><br>
-            <b>BATCH:</b> <span id="id-b"></span><br>
-            <b>PHONE:</b> <span id="id-ph"></span>
+            <b>NAME:</b> <span id="id-n"></span><br><b>FATHER:</b> <span id="id-f"></span><br>
+            <b>CLASS:</b> <span id="id-c"></span><br><b>BATCH:</b> <span id="id-b"></span><br><b>PHONE:</b> <span id="id-ph"></span>
             <div id="id-q" class="qr-id-box"></div>
         </div>
-        <div style="position:absolute; bottom:0; width:100%; height:32px; background:#f8fafc; display:flex; justify-content:space-around; align-items:center; font-size:7px; border-top:1px solid #ddd;">
+        <div style="position:absolute; bottom:0; width:100%; height:32px; background:#f8fafc; display:flex; justify-content:space-around; align-items:center; font-size:8px; border-top:1px solid #ddd;">
             <b style="color:var(--theme-color)">SM SMART TUITION</b>
-            <div style="text-align: center;"><span class="sig-text">Subrata Mahato</span><small style="border-top:1px solid #333; font-weight:bold; font-size:6px;">DIRECTOR</small></div>
+            <div class="sig-box"><span class="sig-text">Subrata Mahato</span><span class="sig-label">Director</span></div>
         </div>
     </div>
-    <button onclick="downloadDoc('id-capture', 'ID')" class="btn btn-grad" style="margin-top:15px">💾 DOWNLOAD ID</button>
-    <button onclick="closeModal('id-modal')" class="btn" style="background:var(--danger); color:white;">CLOSE</button>
+    <button onclick="downloadDoc('id-capture', 'ID_Card')" class="btn btn-grad" style="margin-top:15px">💾 ডাউনলোড করুন</button>
+    <button onclick="closeModal('id-modal')" class="btn" style="background:var(--danger); color:white;">বন্ধ করুন</button>
 </div></div>
+
+<div id="receipt-modal" class="modal"><div style="text-align:center; padding:15px;">
+    <div id="receipt-capture" class="receipt-box">
+        <h3 style="color:var(--theme-color); margin:0; text-align:center; font-size:16px;">FEES RECEIPT</h3><hr>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; margin-top:10px;">
+            <img id="r-img" src="" style="width:55px; height:60px; border:1px solid #ddd; object-fit:cover;">
+            <div style="text-align:left">তারিখ: <b id="r-date"></b><br>আইডি: <b id="r-id"></b><br>ক্লাস: <b id="r-cls"></b></div>
+        </div>
+        <p style="font-size:12px; margin:15px 0; text-align:left;">ছাত্র/ছাত্রী <b><span id="r-name"></span></b> সফলভাবে <b><span id="r-month"></span></b> মাসের বেতন জমা দিয়েছে।</p>
+        <div class="paid-stamp">PAID: 100/-</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div id="r-q"></div>
+            <div class="sig-box" style="position:static;"><span class="sig-text">Subrata Mahato</span><span class="sig-label">Director</span></div>
+        </div>
+    </div>
+    <button onclick="downloadDoc('receipt-capture', 'Receipt')" class="btn btn-grad" style="margin-top:15px">💾 ডাউনলোড করুন</button>
+    <button onclick="closeModal('receipt-modal')" class="btn" style="background:var(--danger); color:white;">বন্ধ করুন</button>
+</div></div>
+
+<div id="add-modal" class="modal"><div class="m-content">
+    <h3 id="modal-title" style="margin-top:0; color:var(--acc);">স্টুডেন্ট ডাটা ফরম</h3>
+    <input type="file" id="a-photo" class="edit-in" accept="image/*">
+    <input type="text" id="a-id" class="edit-in" placeholder="আইডি (Auto)" readonly>
+    <input type="text" id="a-name" class="edit-in" placeholder="ছাত্র/ছাত্রীর নাম">
+    <input type="text" id="a-father" class="edit-in" placeholder="পিতার নাম">
+    <input type="text" id="a-cls" class="edit-in" placeholder="ক্লাস">
+    <input type="text" id="a-batch" class="edit-in" placeholder="ব্যাচ সময়">
+    <input type="text" id="a-phone" class="edit-in" placeholder="ফোন নম্বর">
+    <button onclick="saveStudent()" class="btn btn-grad" style="width:100%; margin-top:15px; padding:12px;">ক্লাউডে সেভ করুন</button>
+    <button id="del-btn" onclick="deleteStudent()" class="btn" style="display:none; width:100%; margin-top:8px; background:var(--danger); color:white">ডিলিট করুন</button>
+    <button onclick="closeModal('add-modal')" class="btn" style="width:100%; margin-top:8px; background:#555; color:#fff">বাতিল</button>
+</div></div>
+
+<div id="bulk-print-zone"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -200,54 +194,19 @@
         window.db = snap.val() ? Object.values(snap.val()) : [];
         render();
         updateFilters();
-        updateBulkZone();
     });
 
     onValue(ref(db_fb, 'notice'), (snap) => {
-        document.getElementById('notice-display').innerText = snap.val() || "Welcome to SM Smart Tuition";
+        document.getElementById('notice-display').innerText = snap.val() || "স্মার্ট টিউশনে স্বাগতম...";
     });
-
-    window.saveStudent = async function() {
-        const id = document.getElementById('a-id').value, n = document.getElementById('a-name').value, c = document.getElementById('a-cls').value;
-        if(!n || !c) return alert("Name & Class Required!");
-        let photo = window.isEditMode ? window.db.find(x => x.id === id).photo : "https://via.placeholder.com/150";
-        const file = document.getElementById('a-photo').files[0];
-        if(file) photo = await compress(file);
-        set(ref(db_fb, 'students/' + id), { 
-            id, name: n, father: document.getElementById('a-father').value, 
-            cls: c, batch: document.getElementById('a-batch').value, 
-            phone: document.getElementById('a-phone').value, photo, 
-            payments: window.isEditMode ? (window.db.find(x => x.id === id).payments || {}) : {} 
-        }).then(() => closeModal('add-modal'));
-    }
-
-    window.saveNotice = function() {
-        set(ref(db_fb, 'notice'), document.getElementById('notice-input').value).then(() => closeModal('notice-modal'));
-    }
-
-    window.deleteStudent = function() {
-        if(confirm("Delete Student?")) remove(ref(db_fb, 'students/' + document.getElementById('a-id').value)).then(() => closeModal('add-modal'));
-    }
-
-    async function compress(f) {
-        return new Promise(res => {
-            const r = new FileReader(); r.readAsDataURL(f);
-            r.onload = e => {
-                const img = new Image(); img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas'); canvas.width = 250; canvas.height = 250;
-                    canvas.getContext('2d').drawImage(img, 0,0, 250, 250); res(canvas.toDataURL('image/jpeg', 0.8));
-                };
-            };
-        });
-    }
 </script>
 
 <script>
-    window.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    window.db = []; window.curIdx = null;
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    window.db = []; window.curIdx = null; window.isEditMode = false;
 
-    function setTheme(t) { document.getElementById('main-body').setAttribute('theme', t); }
+    function setTheme(t) { document.getElementById('main-body').setAttribute('theme', t); localStorage.setItem('sm-theme', t); }
+    setTheme(localStorage.getItem('sm-theme') || '');
 
     function render() {
         const list = document.getElementById('list'), q = document.getElementById('search').value.toLowerCase();
@@ -258,13 +217,13 @@
             const isP = s.payments && s.payments[y+'_'+curM]; if(isP) pCount++;
             if ((s.name.toLowerCase().includes(q) || s.id.includes(q)) && (cf === 'all' || s.cls === cf)) {
                 list.innerHTML += `<div class="card" style="border-left:5px solid ${isP?'var(--success)':'var(--danger)'}">
-                    <a href="https://wa.me/91${s.phone}" target="_blank" class="wa-float">W</a>
-                    <img class="card-img-thumb" src="${s.photo}">
+                    <a href="https://wa.me/91${s.phone}" target="_blank" class="wa-float" style="position:absolute; top:10px; right:10px; background:#25d366; color:white; padding:5px; border-radius:50%; text-decoration:none; font-size:12px; width:25px; height:25px; display:flex; align-items:center; justify-content:center;">W</a>
+                    <img class="card-img-thumb" src="${s.photo || 'https://via.placeholder.com/60'}">
                     <div style="flex:1"><b>${s.name}</b><br><small>${s.id} | Class: ${s.cls}</small>
-                    <div style="margin-top:5px; display:flex; gap:5px;">
-                        <button onclick="openPay(${i})" class="btn" style="background:var(--success); color:white">PAY</button>
-                        <button onclick="openID(${i})" class="btn" style="background:var(--acc); color:white">ID</button>
-                        <button onclick="openEdit(${i})" class="btn" style="background:#555; color:white">Edit</button>
+                    <div style="margin-top:6px; display:flex; gap:5px;">
+                        <button onclick="openPay(${i})" class="btn" style="background:var(--success); color:white">PAYMENT</button>
+                        <button onclick="openID(${i})" class="btn" style="background:var(--acc); color:white">ID CARD</button>
+                        <button onclick="openEdit(${i})" class="btn" style="background:#555; color:white">EDIT</button>
                     </div></div></div>`;
             }
         });
@@ -272,69 +231,123 @@
         document.getElementById('count-m').innerText = (pCount * 100) + "/-";
     }
 
+    // ১৯, ১৬. পেমেন্ট ও আন-পেইড লজিক
     window.openPay = function(i) {
         curIdx = i; document.getElementById('p-name').innerText = db[i].name;
         updatePayGrid(); document.getElementById('pay-modal').style.display = 'block';
-    }
-
-    window.togglePay = function(m) {
-        const y = document.getElementById('currentYear').value, k = y+'_'+m, s = db[curIdx];
-        if(!s.payments) s.payments = {};
-        if(s.payments[k]) { if(confirm("Payment Already Paid! Do you want to UNPAID?")) delete s.payments[k]; }
-        else s.payments[k] = { date: new Date().toLocaleDateString() };
-        FB.update(FB.ref(FB.db_fb, 'students/' + s.id), { payments: s.payments }).then(() => updatePayGrid());
     }
 
     function updatePayGrid() {
         const s = db[curIdx], y = document.getElementById('currentYear').value, g = document.getElementById('m-grid');
         g.innerHTML = ""; months.forEach(m => { 
             const k = y+'_'+m, isP = s.payments && s.payments[k]; 
-            g.innerHTML += `<div class="month-item" onclick="togglePay('${m}')" style="border-color:${isP?'var(--success)':'#333'}">
-                <b>${m}</b><br>${isP ? `<small onclick="openReceipt(event,'${m}','${y}')" style="color:var(--acc);">[Receipt]</small>` : '<small>Due</small>'}
+            g.innerHTML += `<div class="month-item" style="border-color:${isP?'var(--success)':'#444'}" onclick="togglePay('${m}')">
+                <b>${m}</b><br>${isP ? `<small onclick="openReceipt(event,'${m}','${y}')" style="color:var(--acc); font-weight:bold;">[রসিদ]</small>` : '<small style="opacity:0.5">Due</small>'}
                 ${isP?'<div class="paid-badge">✓</div>':''}
             </div>`; 
         });
     }
 
+    window.togglePay = function(m) {
+        const y = document.getElementById('currentYear').value, k = y+'_'+m, s = db[curIdx];
+        if(!s.payments) s.payments = {};
+        if(s.payments[k]) { 
+            if(confirm("এই পেমেন্টটি মুছে দিতে চান? তাহলে এটি আবার Due হয়ে যাবে।")) delete s.payments[k]; 
+        } else {
+            s.payments[k] = { date: new Date().toLocaleDateString('bn-BD') };
+        }
+        FB.update(FB.ref(FB.db_fb, 'students/' + s.id), { payments: s.payments }).then(() => updatePayGrid());
+    }
+
+    // ১৭. রসিদ জেনারেশন ও ডাউনলোড ফিক্স
     window.openReceipt = function(e, m, y) {
         e.stopPropagation(); const s = db[curIdx];
         document.getElementById('r-name').innerText = s.name; document.getElementById('r-id').innerText = s.id;
         document.getElementById('r-cls').innerText = s.cls; document.getElementById('r-month').innerText = m + " " + y;
         document.getElementById('r-date').innerText = s.payments[y+'_'+m].date; document.getElementById('r-img').src = s.photo;
-        document.getElementById('r-q').innerHTML = ""; new QRCode(document.getElementById('r-q'), { text: s.id, width: 40, height: 40 });
+        const qEl = document.getElementById('r-q'); qEl.innerHTML = "";
+        new QRCode(qEl, { text: `SM-PAID-${s.id}-${m}`, width: 45, height: 45 });
         document.getElementById('receipt-modal').style.display = 'block';
     }
 
-    function openID(i) { 
-        const s = db[i]; document.getElementById('id-n').innerText = s.name; 
-        document.getElementById('id-f').innerText = s.father || "N/A"; document.getElementById('id-v').innerText = s.id; 
-        document.getElementById('id-c').innerText = s.cls; document.getElementById('id-b').innerText = s.batch || "N/A";
-        document.getElementById('id-ph').innerText = s.phone; document.getElementById('id-p-view').src = s.photo; 
-        document.getElementById('id-q').innerHTML = ""; new QRCode(document.getElementById('id-q'), { text: s.id, width: 40, height: 40 }); 
-        document.getElementById('id-modal').style.display = 'block'; 
+    // ১৮. আইডি কার্ড ফিক্স
+    window.openID = function(i) { 
+        const s = db[i]; document.getElementById('id-n').innerText = s.name;
+        document.getElementById('id-f').innerText = s.father; document.getElementById('id-v').innerText = s.id;
+        document.getElementById('id-c').innerText = s.cls; document.getElementById('id-b').innerText = s.batch;
+        document.getElementById('id-ph').innerText = s.phone; document.getElementById('id-p-view').src = s.photo;
+        const qEl = document.getElementById('id-q'); qEl.innerHTML = "";
+        new QRCode(qEl, { text: s.id, width: 50, height: 50 });
+        document.getElementById('id-modal').style.display = 'block';
     }
 
-    function updateBulkZone() {
-        const zone = document.getElementById('bulk-print-zone'); zone.innerHTML = "";
-        db.forEach(s => {
-            zone.innerHTML += `
-            <div class="id-card-landscape">
-                <div class="id-header">STUDENT IDENTITY CARD</div>
-                <div class="id-left"><img src="${s.photo}" class="id-photo"><div style="font-size:9px; font-weight:bold; margin-top:5px; color:#0ea5e9">${s.id}</div></div>
-                <div class="id-right"><b>NAME:</b> ${s.name}<br><b>FATHER:</b> ${s.father||'N/A'}<br><b>CLASS:</b> ${s.cls}<br><b>PHONE:</b> ${s.phone}</div>
-                <div style="position:absolute; bottom:0; width:100%; height:32px; background:#f8fafc; display:flex; justify-content:space-around; align-items:center; font-size:7px; border-top:1px solid #ddd;">
-                    <b>SM SMART TUITION</b><div style="text-align: center;"><span class="sig-text">Subrata Mahato</span><small style="border-top:1px solid #333; font-weight:bold; font-size:6px;">DIRECTOR</small></div>
-                </div>
-            </div>`;
+    // ৭. Photo Upload: compress
+    async function compress(f) {
+        return new Promise(res => {
+            const r = new FileReader(); r.readAsDataURL(f);
+            r.onload = e => {
+                const img = new Image(); img.src = e.result;
+                img.onload = () => {
+                    const c = document.createElement('canvas'); c.width = 300; c.height = 300;
+                    c.getContext('2d').drawImage(img,0,0,300,300); res(c.toDataURL('image/jpeg', 0.8));
+                };
+            };
         });
     }
 
-    function updateFilters() { const f = document.getElementById('classFilter'), cls = [...new Set(db.map(s => s.cls))].sort(); f.innerHTML = '<option value="all">ALL CLASSES</option>'; cls.forEach(c => f.innerHTML += `<option value="${c}">${c}</option>`); }
-    function downloadDoc(el, n) { html2canvas(document.getElementById(el), { useCORS: true }).then(c => { const a = document.createElement('a'); a.href = c.toDataURL(); a.download = n+".png"; a.click(); }); }
-    function openAbout() { document.getElementById('about-modal').style.display = 'block'; }
-    function openNoticeModal() { document.getElementById('notice-modal').style.display = 'block'; }
-    function openAddModal() { isEditMode = false; document.getElementById('modal-title').innerText = "REGISTRATION"; document.getElementById('a-id').value = "SM-" + Date.now().toString().slice(-4); ['a-name','a-father','a-cls','a-batch','a-phone'].forEach(id => document.getElementById(id).value = ""); document.getElementById('del-btn').style.display = "none"; document.getElementById('add-modal').style.display = 'block'; }
-    function openEdit(i) { curIdx = i; isEditMode = true; const s = db[i]; document.getElementById('modal-title').innerText = "EDIT INFO"; document.getElementById('a-id').value = s.id; document.getElementById('a-name').value = s.name; document.getElementById('a-father').value = s.father; document.getElementById('a-cls').value = s.cls; document.getElementById('a-batch').value = s.batch; document.getElementById('a-phone').value = s.phone; document.getElementById('del-btn').style.display = "block"; document.getElementById('add-modal').style.display = 'block'; }
+    window.saveStudent = async function() {
+        const id = document.getElementById('a-id').value, n = document.getElementById('a-name').value;
+        if(!n) return alert("নাম আবশ্যক!");
+        let photo = isEditMode ? db[curIdx].photo : "https://via.placeholder.com/150";
+        const file = document.getElementById('a-photo').files[0];
+        if(file) photo = await compress(file);
+        
+        const data = { id, name: n, father: document.getElementById('a-father').value, cls: document.getElementById('a-cls').value, batch: document.getElementById('a-batch').value, phone: document.getElementById('a-phone').value, photo, payments: isEditMode ? (db[curIdx].payments || {}) : {} };
+        FB.set(FB.ref(FB.db_fb, 'students/' + id), data).then(() => closeModal('add-modal'));
+    }
+
+    // ৯, ১২. বাল্ক প্রিন্ট (আইডি এবং রসিদ)
+    window.generateBulk = function(type) {
+        const zone = document.getElementById('bulk-print-zone'), curM = months[new Date().getMonth()], curY = document.getElementById('currentYear').value;
+        zone.innerHTML = "";
+        db.forEach(s => {
+            if(type === 'id') {
+                zone.innerHTML += `<div class="print-item"><div class="id-card-landscape"><div class="id-header">STUDENT IDENTITY CARD</div><div class="id-left"><img src="${s.photo}" class="id-photo"><div style="font-size:10px; font-weight:bold; margin-top:5px;">${s.id}</div></div><div class="id-right"><b>NAME:</b> ${s.name}<br><b>FATHER:</b> ${s.father}<br><b>CLASS:</b> ${s.cls}<br><b>PHONE:</b> ${s.phone}</div><div class="sig-box"><span class="sig-text">Subrata Mahato</span><span class="sig-label">Director</span></div></div></div>`;
+            } else if(type === 'receipt' && s.payments && s.payments[curY+'_'+curM]) {
+                zone.innerHTML += `<div class="print-item"><div class="receipt-box"><h3>FEES RECEIPT</h3><p>ID: ${s.id}</p><p>Name: ${s.name}</p><p>Month: ${curM} ${curY}</p><div class="paid-stamp">PAID: 100/-</div></div></div>`;
+            }
+        });
+        if(zone.innerHTML) setTimeout(() => window.print(), 800);
+        else alert("কোন তথ্য পাওয়া যায়নি!");
+    }
+
+    // ১০. Backup/Restore
+    window.exportData = function() {
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(db)], {type:'application/json'}));
+        a.download = `SM_Backup_${new Date().toLocaleDateString()}.json`; a.click();
+    }
+    window.importData = function(e) {
+        const r = new FileReader(); r.onload = ev => {
+            const data = JSON.parse(ev.target.result);
+            if(confirm("সব ডেটা ক্লাউডে রিস্টোর করবেন?")) data.forEach(s => FB.set(FB.ref(FB.db_fb, 'students/' + s.id), s));
+        }; r.readAsText(e.target.files[0]);
+    }
+
+    // ৬. হাই-রেজোলিউশন ডাউনলোড
+    function downloadDoc(el, n) { 
+        const target = document.getElementById(el);
+        html2canvas(target, {scale: 3, useCORS: true, allowTaint: true}).then(c => { 
+            const a = document.createElement('a'); a.href = c.toDataURL("image/png"); a.download = n+".png"; a.click(); 
+        }); 
+    }
+    
+    // ১৩. স্মার্ট আইডি জেনারেশন
+    function openAddModal() { isEditMode = false; document.getElementById('modal-title').innerText = "নতুন রেজিস্ট্রেশন"; document.getElementById('a-id').value = "SM-" + Date.now().toString().slice(-6); ['a-name','a-father','a-cls','a-batch','a-phone'].forEach(id => document.getElementById(id).value = ""); document.getElementById('del-btn').style.display = "none"; document.getElementById('add-modal').style.display = 'block'; }
+    function openEdit(i) { curIdx = i; isEditMode = true; const s = db[i]; document.getElementById('modal-title').innerText = "তথ্য সংশোধন"; document.getElementById('a-id').value = s.id; document.getElementById('a-name').value = s.name; document.getElementById('a-father').value = s.father; document.getElementById('a-cls').value = s.cls; document.getElementById('a-batch').value = s.batch; document.getElementById('a-phone').value = s.phone; document.getElementById('del-btn').style.display = "block"; document.getElementById('add-modal').style.display = 'block'; }
+    function deleteStudent() { if(confirm("মুছে ফেলতে চান?")) FB.remove(FB.ref(FB.db_fb, 'students/' + db[curIdx].id)).then(() => closeModal('add-modal')); }
+    
+    // ৪. অটোমেটিক ক্লাস ফিল্টার
+    function updateFilters() { const f = document.getElementById('classFilter'), cls = [...new Set(db.map(s => s.cls))].filter(c => c).sort(); f.innerHTML = '<option value="all">সব ক্লাস</option>'; cls.forEach(c => f.innerHTML += `<option value="${c}">${c}</option>`); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 </script>
 </body>
